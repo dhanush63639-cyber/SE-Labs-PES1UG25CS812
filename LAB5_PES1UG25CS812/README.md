@@ -12,8 +12,9 @@ Retail Point of Sale & Discount Tracker — static analysis and remediation usin
 
 - `pos_system.py` — corrected POS implementation.
 - `issues.md` — issue register, severity, description, and remediation.
-- `reflection.md` — responses to the four reflection questions.
-- `run_analysis.py` — optional helper to run the three analysis tools and save their outputs.
+- `reflection.md` — responses to four standard reflection areas.
+- `tests/test_pos_system.py` — regression tests for core behavior and validation.
+- `run_analysis.py` — helper to run the three analysis tools and save their outputs.
 - `requirements.txt` — analysis tool dependencies.
 
 ## Setup and execution
@@ -21,10 +22,15 @@ Retail Point of Sale & Discount Tracker — static analysis and remediation usin
 ```bash
 python -m pip install -r requirements.txt
 python pos_system.py
+python -m unittest discover -s tests -v
 python run_analysis.py
 ```
 
-The helper creates `pylint_report.txt`, `bandit_report.txt`, and `flake8_report.txt`. These are generated from the local tool versions when the helper is run; no static-analysis score is claimed until those commands have actually been executed.
+The helper creates `pylint_report.txt`, `bandit_report.txt`, and `flake8_report.txt` from the local tool versions. No static-analysis score is claimed until those commands have actually been executed.
+
+## Handout note
+
+The starter repository does not contain the separate lab handout. The reflection document therefore addresses four standard topics for this exercise; compare its headings with the exact prompts in your class handout before submission.
 
 ## Reference
 
