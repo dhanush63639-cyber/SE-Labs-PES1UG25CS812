@@ -1,30 +1,44 @@
-name: Lab 7 Hypothesis Tests
-
+name: Lab 7 Fuzz Testing
 on:
   push:
+    branches: [main]
     paths:
-      - "Lab_7_PES1UG25CS812/**"
-      - ".github/workflows/lab7-tests.yml"
+      - 'Lab_7_PES1UG25CS812/**'
+      - '.github/workflows/lab7-tests.yml'
   pull_request:
     paths:
-      - "Lab_7_PES1UG25CS812/**"
-      - ".github/workflows/lab7-tests.yml"
+      - 'Lab_7_PES1UG25CS812/**'
+      - '.github/workflows/lab7-tests.yml'
   workflow_dispatch:
 
 jobs:
-  test:
+  fuzz-tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Lab_7_PES1UG25CS812
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -r requirements.txt
-      - name: Run Hypothesis tests
-        run: python -m pytest -v
+        run: python -m pip install -r Lab_7_PES1UG25CS812/requirements.txt
+      - name: Step 2 — Run original buggy processor
+        working-directory: Lab_7_PES1UG25CS812/evidence/before_fix
+        run: python processor.py
+      - name: Step 4 — Confirm fuzz tests expose original bugs
+        working-directory: Lab_7_PES1UG25CS812/evidence/before_fix
+        run: |
+          set +e
+          python -m pytest -v test_processor.py
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "ERROR: baseline tests unexpectedly passed"
+            exit 1
+          fi
+          echo "Expected result: baseline fuzz tests exposed input-validation defects."
+      - name: Step 5 — Run hardened processor
+        working-directory: Lab_7_PES1UG25CS812
+        run: python processor.py
+      - name: Step 6 — Run tests against fixed processor
+        working-directory: Lab_7_PES1UG25CS812
+        run: python -m pytest -v test_processor.py
