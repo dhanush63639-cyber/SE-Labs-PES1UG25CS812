@@ -1,0 +1,7 @@
+[run]
+branch = True
+source = car_rental_rate
+
+[report]
+show_missing = True
+skip_covered = False
