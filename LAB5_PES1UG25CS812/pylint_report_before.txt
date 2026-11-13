@@ -1,0 +1,24 @@
+************* Module pos_system_before
+pos_system_before.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+pos_system_before.py:6:0: C0103: Constant name "sales_total" doesn't conform to UPPER_CASE naming style (invalid-name)
+pos_system_before.py:9:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:9:0: W0102: Dangerous default value [] as argument (dangerous-default-value)
+pos_system_before.py:10:4: W0603: Using the global statement (global-statement)
+pos_system_before.py:15:8: W0702: No exception type(s) specified (bare-except)
+pos_system_before.py:20:25: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+pos_system_before.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:26:11: W0123: Use of eval (eval-used)
+pos_system_before.py:25:4: W0612: Unused variable 'total' (unused-variable)
+pos_system_before.py:28:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:32:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pos_system_before.py:35:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:36:8: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+pos_system_before.py:36:8: R1732: Consider using 'with' for resource-allocating operations (consider-using-with)
+pos_system_before.py:40:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:40:0: C0103: Function name "printSales" doesn't conform to snake_case naming style (invalid-name)
+pos_system_before.py:43:0: C0116: Missing function or method docstring (missing-function-docstring)
+pos_system_before.py:2:0: W0611: Unused import logging (unused-import)
+
+-----------------------------------
+Your code has been rated at 5.78/10
+
