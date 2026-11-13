@@ -21,6 +21,7 @@ Apply property-based fuzz testing with Hypothesis to explore edge cases in three
 | `processor.py` | Processor implementation supplied with the lab |
 | `test_processor.py` | Hypothesis fuzz tests and deterministic regression tests |
 | `requirements.txt` | Test dependencies |
+| `TEST_REPORT.md` | Verified test execution results |
 
 ## Setup and execution
 
@@ -47,6 +48,13 @@ python -m pytest -v
 ```
 
 Hypothesis generates up to 200 examples per fuzz test. The tests check valid results and expected exceptions for malformed inputs.
+
+## Verification
+
+The GitHub Actions run completed successfully: **7 tests passed in 2.42 seconds** using Python 3.12.16, pytest 9.2.0 and Hypothesis 6.170.15.
+
+- [Test execution report](TEST_REPORT.md)
+- [GitHub Actions run](https://github.com/dhanush63639-cyber/SE-Labs-PES1UG25CS812/actions/runs/43407092113)
 
 ## Notes
 
