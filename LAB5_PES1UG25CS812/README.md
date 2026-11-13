@@ -20,6 +20,8 @@ Retail Point of Sale & Discount Tracker — static analysis and remediation usin
 - `report.md` — consolidated lab report and reproducibility details.
 - `tests/test_pos_system.py` — regression tests for core behavior and validation.
 - `run_analysis.py` — generates all six before/after analyzer reports.
+- `generate_report.py` — generates the consolidated PDF report.
+- `LAB5_PES1UG25CS812_Report.pdf` — compiled Lab 5 report.
 - `requirements.txt` — analysis tool dependencies.
 
 ## Setup and execution
