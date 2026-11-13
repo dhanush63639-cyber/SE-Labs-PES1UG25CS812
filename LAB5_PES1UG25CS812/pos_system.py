@@ -7,9 +7,8 @@ stock tracking, and receipt logging. Run it directly for a demonstration.
 from __future__ import annotations
 
 import logging
-import random
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable
 
 PRICE_LIST: dict[str, float] = {
     "pen": 10.0,
@@ -18,7 +17,7 @@ PRICE_LIST: dict[str, float] = {
     "bottle": 150.0,
 }
 TAX_RATE = 0.05
-SALES_TOTAL = 0.0
+SALES_STATE: dict[str, float] = {"total": 0.0}
 RECEIPT_LINES: list[str] = []
 STOCK: dict[str, int] = {
     "pen": 100,
@@ -36,8 +35,8 @@ def process_checkout(
     receipts: list[float] | None = None,
 ) -> float:
     """Calculate a bill, update sales, and append the total to receipts."""
-    global SALES_TOTAL
-
+    if isinstance(tax_rate, bool) or not isinstance(tax_rate, (int, float)):
+        raise TypeError("tax_rate must be a number")
     if not 0 <= tax_rate <= 1:
         raise ValueError("tax_rate must be between 0 and 1")
 
@@ -52,19 +51,19 @@ def process_checkout(
         subtotal += PRICE_LIST[item_name] * quantity
 
     total = round(subtotal * (1 + tax_rate), 2)
-    SALES_TOTAL = round(SALES_TOTAL + total, 2)
+    SALES_STATE["total"] = round(SALES_STATE["total"] + total, 2)
 
     if receipts is not None:
         receipts.append(total)
 
-    receipt_number = random.randint(1000, 9999)
+    receipt_number = len(RECEIPT_LINES) + 1
     RECEIPT_LINES.append(f"Receipt #{receipt_number} total={total:.2f}")
     return total
 
 
 def apply_promo_code(code_str: str, total: float | None = None) -> float:
     """Apply an allow-listed promo code without evaluating user expressions."""
-    amount = SALES_TOTAL if total is None else total
+    amount = SALES_STATE["total"] if total is None else total
     normalized_code = code_str.strip().upper()
 
     if normalized_code == "SAVE10":
@@ -89,7 +88,12 @@ def update_stock(item: str, qty: int) -> int:
         raise ValueError("stock quantity must be greater than zero")
 
     STOCK[item] += qty
-    LOGGER.info("Stock updated for %s by %d; available=%d", item, qty, STOCK[item])
+    LOGGER.info(
+        "Stock updated for %s by %d; available=%d",
+        item,
+        qty,
+        STOCK[item],
+    )
     return STOCK[item]
 
 
@@ -103,14 +107,20 @@ def save_receipt_log(file: str | Path = "pos_log.txt") -> None:
 
 def print_sales() -> None:
     """Display the current sales total."""
-    print(f"Sales so far: {SALES_TOTAL:.2f}")
+    print(f"Sales so far: {SALES_STATE['total']:.2f}")
 
 
 def main() -> None:
     """Run representative checkout and promo examples."""
     demo_receipts: list[float] = []
-    print("Bill 1:", process_checkout([("pen", 3), ("notebook", 2)], receipts=demo_receipts))
-    print("Bill 2:", process_checkout([("bag", 1)], receipts=demo_receipts))
+    first_bill = process_checkout(
+        [("pen", 3), ("notebook", 2)],
+        receipts=demo_receipts,
+    )
+    second_bill = process_checkout([("bag", 1)], receipts=demo_receipts)
+
+    print("Bill 1:", first_bill)
+    print("Bill 2:", second_bill)
     print("After SAVE10:", apply_promo_code("SAVE10"))
     print("After SAVE50:", apply_promo_code("SAVE50"))
     update_stock("pen", 5)
@@ -119,5 +129,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(levelname)s: %(message)s",
+    )
     main()
