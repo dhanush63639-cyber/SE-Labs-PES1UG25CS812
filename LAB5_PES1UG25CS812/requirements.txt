@@ -1,3 +1,4 @@
 pylint>=3.0
 bandit>=1.7
 flake8>=7.0
+reportlab>=4.0
