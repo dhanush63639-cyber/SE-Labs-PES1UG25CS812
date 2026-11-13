@@ -4,6 +4,8 @@
 **SRN:** PES1UG25CS812  
 **Topic:** Static Code Analysis — Retail Point of Sale & Discount Tracker
 
+*Note: The starter repository does not include the separate lab handout. These responses address four standard reflection topics for this exercise. Match the headings to the exact handout wording before final submission.*
+
 ## 1. What is the difference between a linter and a security scanner?
 
 A linter primarily checks source-code quality, style, naming, formatting, common programming mistakes, and maintainability. In this lab, Pylint and Flake8 help identify issues such as unused imports, naming conventions, missing documentation, and suspicious code patterns. A security scanner focuses on weaknesses that could be exploited. Bandit checks Python code for risky constructs, including dynamic execution with `eval()`, unsafe subprocess usage, and other common security problems. Their goals overlap, but neither tool replaces code review or testing.
