@@ -43,7 +43,9 @@ class RetailPosTests(unittest.TestCase):
 
     def test_checkout_rejects_string_quantity(self) -> None:
         with self.assertRaises(TypeError):
-            pos_system.process_checkout([("pen", "2")])  # type: ignore[list-item]
+            pos_system.process_checkout(
+                [("pen", "2")]
+            )  # type: ignore[list-item]
 
     def test_promo_codes_apply_only_allowed_discounts(self) -> None:
         self.assertEqual(pos_system.apply_promo_code("SAVE10", 100), 90.0)
