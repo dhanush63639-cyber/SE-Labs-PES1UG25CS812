@@ -1,0 +1,30 @@
+name: Lab 7 Hypothesis Tests
+
+on:
+  push:
+    paths:
+      - "Lab_7_PES1UG25CS812/**"
+      - ".github/workflows/lab7-tests.yml"
+  pull_request:
+    paths:
+      - "Lab_7_PES1UG25CS812/**"
+      - ".github/workflows/lab7-tests.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Lab_7_PES1UG25CS812
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      - name: Run Hypothesis tests
+        run: python -m pytest -v
