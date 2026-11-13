@@ -11,6 +11,9 @@ on:
       - '.github/workflows/lab7-tests.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   fuzz-tests:
     runs-on: ubuntu-latest
@@ -42,3 +45,14 @@ jobs:
       - name: Step 6 — Run tests against fixed processor
         working-directory: Lab_7_PES1UG25CS812
         run: python -m pytest -v test_processor.py
+      - name: Generate screenshot evidence and PDF report
+        run: python Lab_7_PES1UG25CS812/generate_report.py
+      - name: Commit report and screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Lab_7_PES1UG25CS812/LAB7_FuzzTesting_Report.pdf Lab_7_PES1UG25CS812/screenshots/
+          if ! git diff --cached --quiet; then
+            git commit -m "Add Lab 7 fuzz testing screenshots and PDF report"
+            git push
+          fi
