@@ -1,61 +1,28 @@
-# Lab 7 — Fuzz Testing with Hypothesis
+# Lab 7 — Fuzzing for Input Validation Bugs
 
 **Student:** Dhanush Gowda A S  
 **USN:** PES1UG25CS812  
-**Project:** L6_L7_02 — Car Rental Rate
+**Project:** Car Rental Rate
 
-## Objective
+This submission follows the six steps in the supplied Lab 7 handout.
 
-Apply property-based fuzz testing with Hypothesis to explore edge cases in three input-processing routines and detect parsing failures.
+## Deliverables
+- `processor.py` — hardened versions of all three application functions
+- `test_processor.py` — Hypothesis fuzz tests and deterministic regression tests
+- `requirements.txt` — pytest and Hypothesis dependencies
+- `LAB7_FuzzTesting_Report.pdf` — screenshots and analysis
+- `evidence/before_fix/` — original buggy processor and the same tests, retained to reproduce the initial failures
 
-## Functions under test
+## Functions hardened
+- `sanitize_license_plate`: rejects non-string, empty, and invalid-character inputs; removes supported separators and uppercases valid plates.
+- `parse_trip_mileage`: rejects wrong types, empty fields, non-numeric, negative, NaN, and infinite mileage values.
+- `format_rental_invoice`: validates the three-field record, non-empty driver/category, and positive integer rental days.
 
-- `sanitize_license_plate(plate)`: trims whitespace, removes hyphens, spaces, underscores and hash characters, and converts the result to uppercase.
-- `parse_trip_mileage(mileage_csv)`: parses a comma-separated sequence of mileage values as floats.
-- `format_rental_invoice(record)`: parses a `Driver:Days:Category` record and applies the SUV rate ($50/day) or standard rate ($30/day).
-
-## Files
-
-| File | Purpose |
-|---|---|
-| `processor.py` | Processor implementation supplied with the lab |
-| `test_processor.py` | Hypothesis fuzz tests and deterministic regression tests |
-| `requirements.txt` | Test dependencies |
-| `TEST_REPORT.md` | Verified test execution results |
-
-## Setup and execution
-
-Use Python 3.10 or later.
-
+## Run locally
 ```bash
-python -m venv .venv
-```
-
-Activate the environment, then install dependencies:
-
-**Windows PowerShell**
-```powershell
-.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python -m pytest -v
+python processor.py
+python -m pytest -v test_processor.py
 ```
 
-**Linux / macOS**
-```bash
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pytest -v
-```
-
-Hypothesis generates up to 200 examples per fuzz test. The tests check valid results and expected exceptions for malformed inputs.
-
-## Verification
-
-The GitHub Actions run completed successfully: **7 tests passed in 2.42 seconds** using Python 3.12.16, pytest 9.2.0 and Hypothesis 6.170.15.
-
-- [Test execution report](TEST_REPORT.md)
-- [GitHub Actions run](https://github.com/dhanush63639-cyber/SE-Labs-PES1UG25CS812/actions/runs/43407092113)
-
-## Notes
-
-The processor retains the starter lab's behavior so that the fuzz tests exercise the supplied routines rather than silently changing their input contract. The test suite treats invalid numeric CSV values and malformed rental records as expected parsing failures.
+Hypothesis generates up to 150 examples per fuzz test. GitHub Actions reproduces failures against the original processor, then verifies the fixed processor.
